@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["id", "name", "full_name", "default_branch"],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string" },
+    "full_name": { "type": "string" },
+    "default_branch": { "type": "string" }
+  }
+}

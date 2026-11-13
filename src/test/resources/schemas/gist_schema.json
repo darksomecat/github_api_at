@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["id", "url", "description", "public", "files"],
+  "properties": {
+    "id": { "type": "string" },
+    "url": { "type": "string", "format": "uri" },
+    "description": { "type": ["string", "null"] },
+    "public": { "type": "boolean" },
+    "files": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["filename", "raw_url"],
+        "properties": {
+          "filename": { "type": "string" },
+          "raw_url": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}
