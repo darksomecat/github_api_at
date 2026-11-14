@@ -1,13 +1,7 @@
 package tests;
 
 import api.GistApi;
-import io.qameta.allure.Feature;
-import io.qameta.allure.JiraIssue;
-import io.qameta.allure.JiraIssues;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.ValidatableResponse;
 import models.GitHubErrorResponse;
 import models.GitHubGistRequest;
@@ -35,6 +29,7 @@ import static tests.TestData.UNAUTHORIZED_DESCRIPTION;
 import static tests.TestData.UPDATE_DESCRIPTION;
 import static tests.TestData.buildGistRequest;
 
+@Layer("rest")
 @Feature("Gists")
 @Owner("aukolova")
 public class GistTests extends TestBase {

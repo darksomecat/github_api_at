@@ -1,13 +1,7 @@
 package tests;
 
 import api.UserApi;
-import io.qameta.allure.Feature;
-import io.qameta.allure.JiraIssue;
-import io.qameta.allure.JiraIssues;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import models.GitHubErrorResponse;
 import models.GitHubUserResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +16,7 @@ import static specs.UserSpec.userUnauthorized401ResponseSpec;
 import static tests.TestData.AUTHENTICATION_REQUIRED_MESSAGE;
 import static tests.TestData.EXPECTED_USER_TYPE;
 
+@Layer("rest")
 @Feature("Authorization")
 @Owner("aukolova")
 public class AuthTests extends TestBase {

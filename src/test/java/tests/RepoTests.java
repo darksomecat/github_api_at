@@ -1,13 +1,7 @@
 package tests;
 
 import api.RepoApi;
-import io.qameta.allure.Feature;
-import io.qameta.allure.JiraIssue;
-import io.qameta.allure.JiraIssues;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import models.GitHubErrorResponse;
 import models.GitHubRepoResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +17,7 @@ import static tests.TestData.NONEXISTENT_REPO_NAME;
 import static tests.TestData.NOT_FOUND_MESSAGE;
 import static tests.TestData.NOT_FOUND_STATUS;
 
+@Layer("rest")
 @Feature("Repositories")
 @Owner("aukolova")
 public class RepoTests extends TestBase {
