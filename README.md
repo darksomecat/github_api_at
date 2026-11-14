@@ -11,7 +11,6 @@
 > Платформа предоставляет полноценный REST API для управления репозиториями, профилями пользователей, gist и другими сущностями.  
 > Документация API: [docs.github.com/rest](https://docs.github.com/rest).
 
-Проект представляет собой дипломную работу по автоматизации API-тестирования **GitHub REST API** с использованием Java, REST Assured, JUnit 5 и Allure TestOps.
 
 ____
 
@@ -53,12 +52,12 @@ ____
 - Генерация тестовых данных — **DataFaker**.
 - Валидация ответов — **JSON Schema Validator**.
 - CI — **Jenkins** с формированием **Allure Report**.
-- Результаты и тест-кейсы — в **Allure TestOps**, интеграция с **Jira** через `@JiraIssue`.
+- Результаты и тест-кейсы — в **Allure TestOps**, интеграция с **Jira**.
 - Уведомления о прогоне — в **Telegram** через бота.
 
 Содержание Allure-отчёта:
-* шаги теста (паттерн AAA через `Allure.step`);
-* запросы и ответы API с кастомными tpl-шаблонами;
+* шаги теста;
+* запросы и ответы API;
 * статус-коды и JSON-схемы ответов;
 * параметры запуска и окружение.
 
@@ -68,7 +67,7 @@ ____
 ## Тест-план автоматизированных тест-кейсов
 
 **Авторизация (`/user`):**
-- Получение данных авторизованного пользователя — 200, логин и тип пользователя совпадают с ожидаемыми;
+- Получение данных авторизованного пользователя — 200, проверка логина и типа пользователя;
 - Запрос без токена — 401, сообщение `Requires authentication`.
 
 **Репозитории (`/repos/{owner}/{repo}`):**
@@ -80,7 +79,7 @@ ____
 - Обновление gist (PATCH) — 200, описание изменилось;
 - Удаление gist (DELETE) — 204, повторный GET — 404;
 - Создание gist без токена — 401;
-- Параметризованный тест: создание gist с видимостью public=true/false.
+- Создание gist с видимостью public=true/false.
 
 ____
 
@@ -114,19 +113,17 @@ ____
 
 ### Параметры запуска
 
-| Параметр | Описание | Значение по умолчанию |
-|---|---|---|
-| `baseUri` | Базовый URI API | `https://api.github.com` |
-| `githubUser` | Логин GitHub | `TestAPIAQA` |
-| `githubRepo` | Репозиторий для тестов (owner/name) | `octocat/Hello-World` |
-| `githubToken` | Personal Access Token | нет |
+| Параметр | Описание |
+|---|---|
+| `baseUri` | Базовый URI API |
+| `githubUser` | Логин GitHub |
+| `githubRepo` | Репозиторий для тестов (owner/name) | 
+| `githubToken` | Personal Access Token | 
 
 ### Токен
 
-Тестам нужен GitHub Personal Access Token (classic) со скоупами `repo` и `gist`:
-GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic).
+Тестам нужен GitHub Personal Access Token (classic) со скоупами `repo` и `gist`.
 
-GitHub не поддерживает создание Personal Access Token через API по email и паролю. Токен нужно один раз создать в настройках GitHub и передать в тесты одним из способов (в порядке приоритета):
 
 1. Системное свойство `githubToken`:
 
@@ -155,17 +152,9 @@ GITHUB_TOKEN=ТОКЕН ./gradlew test
 ____
 
 <a id="jenkins"></a>
-## <img alt="Jenkins" height="25" src="images/logo/Jenkins.svg" width="25"/> Сборка в Jenkins
+## <img alt="Jenkins" height="25" src="images/logo/Jenkins.svg" width="25"/> <a href="https://jenkins.qa.guru/job/aukolova-github-api">Сборка в Jenkins</a>
 
-Создайте в Jenkins секрет типа **Secret text** с ID `github-api-token` и передайте его в переменную окружения через Credentials Binding:
-
-```groovy
-environment {
-    GITHUB_TOKEN = credentials('github-api-token')
-}
-```
-
-После этого тесты автоматически получат токен из `GITHUB_TOKEN`. Пример шага сборки с параметрами:
+Пример шага сборки с параметрами:
 
 ```bash
 ./gradlew clean test \
@@ -174,27 +163,15 @@ environment {
   -DbaseUri=${BASE_URI}
 ```
 
-| Параметр Jenkins | Описание |
-|---|---|
-| `github-api-token` | Secret text credential с GitHub Personal Access Token |
-| `USER` | Логин GitHub |
-| `REPO` | Репозиторий для тестов (owner/name) |
-| `BASE_URI` | Базовый URI API |
-
 <p align="center">
-  <img title="Jenkins — страница сборки проекта (добавить скриншот)" src="images/screenshots/jenkins_build.png" alt="Jenkins build" width="950"/>
+  <img title="Jenkins — страница сборки проекта" src="images/screenshots/jenkins_build.png" alt="Jenkins build" width="950"/>
 </p>
 
 ____
 
 <a id="allure"></a>
-## <img alt="Allure Report" height="25" src="images/logo/Allure_Report.svg" width="25"/> Allure-отчёт
+## <img alt="Allure Report" height="25" src="images/logo/Allure_Report.svg" width="25"/> <a href="https://jenkins.qa.guru/job/aukolova-github-api/5/allure/">Allure-отчёт</a>
 
-После завершения сборки в Jenkins формируется Allure-отчёт. Локально отчёт можно открыть командой:
-
-```bash
-./gradlew allureServe
-```
 
 ### Overview
 
@@ -211,7 +188,7 @@ ____
 ____
 
 <a id="allure-testops"></a>
-## <img alt="Allure TestOps" height="25" src="images/logo/AllureTestOps.svg" width="25"/> Интеграция с Allure TestOps
+## <img alt="Allure ТестОпс" height="25" src="images/logo/AllureTestOps.svg" width="25"/> <a href="https://allure.qa.guru/project/5437/dashboards/5727">Интеграция с Allure ТестОпс</a>
 
 Выполнена интеграция сборки Jenkins с **Allure TestOps**. Каждый тест размечен аннотациями `@Story`, `@JiraIssues`, `@Tags`, `@Severity` и `@DisplayName`.
 
@@ -230,7 +207,7 @@ ____
 ____
 
 <a id="jira"></a>
-## <img alt="Jira" height="25" src="images/logo/Jira.svg" width="25"/> Интеграция с Jira
+## <img alt="Jira" height="25" src="images/logo/Jira.svg" width="25"/> <a href="https://jira.qa.guru/browse/MUL-77">Интеграция с Jira</a>
 
 Реализована интеграция **Allure TestOps** с **Jira**: в тикете отображаются связанные тест-кейсы и результаты прогонов через аннотации `@JiraIssue`.
 
